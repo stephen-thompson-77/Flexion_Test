@@ -8,6 +8,8 @@ public class GamePurchase implements Purchase {
 	private String id;
 	private String itemId;
 	
+	public GamePurchase(){}
+	
 	public boolean getConsumed() {
 		return this.consumed;
 	}

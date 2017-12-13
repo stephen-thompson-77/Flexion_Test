@@ -1,7 +1,7 @@
 package thompson.flexion.entites;
 
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class DeveloperTest {
 	private String pTwoBuyResponse = "{\"consumed\":\"false\",\"id\":\"TestId2\",\"itemId\":\"Test-Item-Id2\"}";
 	private String pOneConsumeResponse = "{\"consumed\":\"true\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"}";
 	private String pTwoConsumeResponse = "{\"consumed\":\"true\",\"id\":\"TestId2\",\"itemId\":\"Test-Item-Id2\"}";
-	private String pListOneResponse = "{\"purchases\":[{\"consumed\":\"true\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"}]}";
+	private String pListOneResponse = "{\"purchases\":[{\"consumed\":\"false\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"}]}";
 	private String pListOneAndTwoResponse = "{\"purchases\":[{\"consumed\":\"false\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"},"
 			+ "{\"consumed\":\"false\",\"id\":\"TestId2\",\"itemId\":\"Test-Item-Id2\"}]}";
 	
@@ -51,11 +51,11 @@ public class DeveloperTest {
 		pTwo.setItemId("Test-Item-Id2");
 		pTwo.setConsumed(false);
 		
-		List<Purchase> pListOne = new ArrayList<Purchase>();
+		pListOne = new ArrayList<Purchase>();
 		pListOne.add(pOne);
 
-		List<Purchase> pListTwo = new ArrayList<Purchase>();
-		pListTwo.add(pTwo);
+		pListTwo = new ArrayList<Purchase>();
+		pListTwo.add(pOne);
 		pListTwo.add(pTwo);
 	}
 	
@@ -71,7 +71,7 @@ public class DeveloperTest {
 		when(mockHandler.doPost(anyString())).thenReturn(pOneConsumeResponse);
 		Assert.assertEquals(false, pOne.getConsumed());
 		developer.consume(pOne);
-		Assert.assertEquals(true, pOne.getConsumed());
+		verify(mockHandler).doPost("/GameDeveloper/consume/" + pOne.getId());
 	}
 
 	@Test
@@ -79,29 +79,26 @@ public class DeveloperTest {
 		when(mockHandler.doPost(anyString())).thenReturn(pOneBuyResponse);
 		when(mockHandler.doGet(anyString())).thenReturn(pListOneResponse);
 		Purchase p = developer.buy("TestId1");
-		List<Purchase> pList = new ArrayList<Purchase>();
-		pList.add(p);
-		Assert.assertEquals(pListOne, containsInAnyOrder(pList.toArray()));
+		List<Purchase> pList = developer.getPurchases();
+		Assert.assertEquals(pListOne, pList);
 	}
 	
 	@Test
 	public void getAllPurchasesTwoTest(){
 		when(mockHandler.doPost(anyString())).thenReturn(pOneBuyResponse);
+		Purchase p1 = developer.buy("TestId1");
 		when(mockHandler.doPost(anyString())).thenReturn(pTwoBuyResponse);
 		when(mockHandler.doGet(anyString())).thenReturn(pListOneAndTwoResponse);
-		Purchase p1 = developer.buy("TestId1");
 		Purchase p2 = developer.buy("TestId2");
-		List<Purchase> pList = new ArrayList<Purchase>();
-		pList.add(p1);
-		pList.add(p2);
-		Assert.assertEquals(pListTwo, containsInAnyOrder(pList.toArray()));
+		List<Purchase> pList = developer.getPurchases();
+		Assert.assertEquals(pListTwo, pList);
 	}
 	
 	@Test
 	public void buyTwoItemsTest(){
 		when(mockHandler.doPost(anyString())).thenReturn(pOneBuyResponse);
-		when(mockHandler.doPost(anyString())).thenReturn(pTwoBuyResponse);
 		Purchase p1 = developer.buy("TestId1");
+		when(mockHandler.doPost(anyString())).thenReturn(pTwoBuyResponse);
 		Purchase p2 = developer.buy("TestId2");
 		Assert.assertEquals(pOne, p1);
 		Assert.assertEquals(pTwo, p2);
@@ -110,13 +107,13 @@ public class DeveloperTest {
 	@Test
 	public void consumeTwoItemsTest(){
 		when(mockHandler.doPost(anyString())).thenReturn(pOneConsumeResponse);
-		when(mockHandler.doPost(anyString())).thenReturn(pTwoConsumeResponse);
 		Assert.assertEquals(false, pOne.getConsumed());
+		when(mockHandler.doPost(anyString())).thenReturn(pTwoConsumeResponse);
 		Assert.assertEquals(false, pTwo.getConsumed());
 		developer.consume(pOne);
 		developer.consume(pTwo);
-		Assert.assertEquals(true, pOne.getConsumed());
-		Assert.assertEquals(true, pTwo.getConsumed());
+		verify(mockHandler).doPost("/GameDeveloper/consume/" + pOne.getId());
+		verify(mockHandler).doPost("/GameDeveloper/consume/" + pTwo.getId());
 	}
 	
 }

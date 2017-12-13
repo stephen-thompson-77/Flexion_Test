@@ -51,14 +51,16 @@ public class RequestManager implements RequestHandler {
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
 			status = con.getResponseCode();
-			BufferedReader in = new BufferedReader(
-					  new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			content = new StringBuffer();
-			while ((inputLine = in.readLine()) != null) {
-			    content.append(inputLine);
+			if(status >= 200 && status < 300){
+				BufferedReader in = new BufferedReader(
+						  new InputStreamReader(con.getInputStream()));
+				String inputLine;
+				content = new StringBuffer();
+				while ((inputLine = in.readLine()) != null) {
+				    content.append(inputLine);
+				}
+				in.close();
 			}
-			in.close();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
