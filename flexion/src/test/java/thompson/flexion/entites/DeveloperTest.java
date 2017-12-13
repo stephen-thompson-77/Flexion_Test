@@ -27,13 +27,13 @@ public class DeveloperTest {
 	private List<Purchase> pListOne;
 	private List<Purchase> pListTwo;
 	private RequestHandler mockHandler;
-	private String pOneBuyResponse = "{ \"consumed\": \"false\", \"id\": \"TestId1\", \"itemId\": \"Test-Item-Id1\" }";
-	private String pTwoBuyResponse = "{ \"consumed\": \"false\", \"id\": \"TestId2\", \"itemId\": \"Test-Item-Id2\" }";
-	private String pOneConsumeResponse = "{ \"consumed\": \"true\", \"id\": \"TestId1\", \"itemId\": \"Test-Item-Id1\" }";
-	private String pTwoConsumeResponse = "{ \"consumed\": \"true\", \"id\": \"TestId2\", \"itemId\": \"Test-Item-Id2\" }";
-	private String pListOneResponse = "{ \"purchases\" : [{ \"consumed\": \"true\", \"id\": \"TestId1\", \"itemId\": \"Test-Item-Id1\" }] }";
-	private String pListOneAndTwoResponse = "{ \"purchases\" : [{ \"consumed\": \"false\", \"id\": \"TestId1\", \"itemId\": \"Test-Item-Id1\" },"
-			+ "{ \"consumed\": \"false\", \"id\": \"TestId2\", \"itemId\": \"Test-Item-Id2\" }] }";
+	private String pOneBuyResponse = "{\"consumed\":\"false\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"}";
+	private String pTwoBuyResponse = "{\"consumed\":\"false\",\"id\":\"TestId2\",\"itemId\":\"Test-Item-Id2\"}";
+	private String pOneConsumeResponse = "{\"consumed\":\"true\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"}";
+	private String pTwoConsumeResponse = "{\"consumed\":\"true\",\"id\":\"TestId2\",\"itemId\":\"Test-Item-Id2\"}";
+	private String pListOneResponse = "{\"purchases\":[{\"consumed\":\"true\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"}]}";
+	private String pListOneAndTwoResponse = "{\"purchases\":[{\"consumed\":\"false\",\"id\":\"TestId1\",\"itemId\":\"Test-Item-Id1\"},"
+			+ "{\"consumed\":\"false\",\"id\":\"TestId2\",\"itemId\":\"Test-Item-Id2\"}]}";
 	
 	
 	@Before

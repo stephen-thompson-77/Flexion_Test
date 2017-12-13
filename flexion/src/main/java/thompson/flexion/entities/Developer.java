@@ -34,7 +34,8 @@ public class Developer implements Integration {
 	}
 
 	public Purchase buy(String arg0) {
-		// TODO Auto-generated method stub
+		String response = requestHandler.doPost("/" + this.developerId + "/buy/" + arg0);
+		
 		return null;
 	}
 
