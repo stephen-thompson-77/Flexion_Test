@@ -12,7 +12,7 @@ public abstract class AbstractIntegration implements Integration {
 	 * @param ids - a list of the item ids
 	 * @return a list of the purchases made
 	 */
-	public List<Purchase> buyMuliple(List<String> ids){
+	public List<Purchase> buyMultiple(List<String> ids){
 		return null;
 	}
 	
